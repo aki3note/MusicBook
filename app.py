@@ -2,23 +2,46 @@ import streamlit as st
 import base64
 import os
 
+# ページ設定
 st.set_page_config(page_title="うたボタン", layout="wide")
 
+# 背景画像の base64 読み込み関数
 def get_base64_image(image_path):
     with open(image_path, "rb") as f:
         data = f.read()
         return base64.b64encode(data).decode()
 
+# base64背景画像（768×1024）
 bg_base64 = get_base64_image("static/background.jpg")
 
-# ボタン位置パラメータ
-BUTTON_WIDTH = 150
-BUTTON_HEIGHT = 130
-LEFT_START = 40
-TOP_START = 40
-X_SPACING = 165
-Y_SPACING = 155
+# CSS：背景画像 & ボタン
+st.markdown(f"""
+<style>
+.container {{
+    position: relative;
+    width: 768px;
+    height: 1024px;
+    background-image: url("data:image/jpeg;base64,{bg_base64}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid #ccc;
+    margin: 0 auto;
+}}
 
+.button {{
+    position: absolute;
+    background-color: rgba(100, 100, 255, 0.3);  /* 半透明デバッグ */
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    width: 160px;
+    height: 150px;
+    cursor: pointer;
+}}
+</style>
+<div class="container">
+""", unsafe_allow_html=True)
+
+# 音声対応データ
 buttons = [
     {"title": "いぬのおまわりさん", "sound": "inu.mp3"},
     {"title": "どんぐりころころ", "sound": "donguri.mp3"},
@@ -38,48 +61,28 @@ buttons = [
     {"title": "アンパンマン", "sound": "anpanman.mp3"},
 ]
 
-# ボタンHTMLを全部まとめる
-button_html = ""
+# ボタン位置パラメータ
+BUTTON_WIDTH = 150
+BUTTON_HEIGHT = 130
+LEFT_START = 350
+TOP_START = -800
+X_SPACING = 160
+Y_SPACING = 120
+
+# 16個ボタン配置
 for i, btn in enumerate(buttons):
     row = i // 4
     col = i % 4
     top = TOP_START + row * Y_SPACING
     left = LEFT_START + col * X_SPACING
-    button_html += f"""
+    st.markdown(f"""
     <button onclick="window.location.search='?play={btn['sound']}'"
             class="button"
             style="top: {top}px; left: {left}px;">
     </button>
-    """
-
-# 背景とボタン
-st.markdown(f"""
-<style>
-.container {{
-    position: relative;
-    width: 768px;
-    height: 1024px;
-    background-image: url("data:image/jpeg;base64,{bg_base64}");
-    background-size: cover;
-    background-repeat: no-repeat;
-    border: 2px solid #ccc;
-    margin: 0 auto;
-}}
-
-.button {{
-    position: absolute;
-    background-color: rgba(100, 100, 255, 0.3);  /* 半透明で見える */
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    width: {BUTTON_WIDTH}px;
-    height: {BUTTON_HEIGHT}px;
-    cursor: pointer;
-}}
-</style>
-<div class="container">
-{button_html}
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+    
+st.markdown("</div>", unsafe_allow_html=True)
 
 # 音声再生
 query_params = st.query_params
