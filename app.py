@@ -10,7 +10,7 @@ buttons = [
     {"title": "うさぎ", "sound": "usagi.mp3"},
     {"title": "あめふり", "sound": "amefuri.mp3"},
     {"title": "きんたろう", "sound": "kintaro.mp3"},
-    {"title": "あかいとりことり", "sound": "akaitori.mp3"},
+    {"title": "あかいとりことり", "sound": "あかいとりことり.mp3"},
     {"title": "こいのぼり", "sound": "koinobori.mp3"},
     {"title": "たこのうた", "sound": "tako.mp3"},
     {"title": "しゃぼんだま", "sound": "shabon.mp3"},
