@@ -69,20 +69,48 @@ TOP_START = -800
 X_SPACING = 160
 Y_SPACING = 120
 
-# 16個ボタン配置
+# 16個ボタンのHTMLを一気に構築
+button_html = ""
 for i, btn in enumerate(buttons):
     row = i // 4
     col = i % 4
     top = TOP_START + row * Y_SPACING
     left = LEFT_START + col * X_SPACING
-    st.markdown(f"""
+    button_html += f"""
     <button onclick="window.location.search='?play={btn['sound']}'"
             class="button"
             style="top: {top}px; left: {left}px;">
     </button>
-    """, unsafe_allow_html=True)
-    
-st.markdown("</div>", unsafe_allow_html=True)
+    """
+
+# コンテナ全体を1回で出力（ボタンも中にまとめて）
+st.markdown(f"""
+<style>
+.container {{
+    position: relative;
+    width: 768px;
+    height: 1024px;
+    background-image: url("data:image/jpeg;base64,{bg_base64}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid #ccc;
+    margin: 0 auto;
+}}
+
+.button {{
+    position: absolute;
+    background-color: rgba(100, 100, 255, 0.3);  /* 半透明デバッグ */
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    width: {BUTTON_WIDTH}px;
+    height: {BUTTON_HEIGHT}px;
+    cursor: pointer;
+}}
+</style>
+<div class="container">
+{button_html}
+</div>
+""", unsafe_allow_html=True)
 
 # 音声再生
 query_params = st.query_params
