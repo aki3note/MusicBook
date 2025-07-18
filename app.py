@@ -55,7 +55,7 @@ st.markdown("""
 
 # 背景とボタン配置
 st.markdown('<div class="container">', unsafe_allow_html=True)
-st.image("static/background.jpg", use_column_width=False, width=768)
+st.image("static/background.jpg", use_container_width=False, width=768)
 
 # 16個のボタン配置
 for i, btn in enumerate(buttons):
