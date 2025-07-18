@@ -75,7 +75,7 @@ for i, btn in enumerate(buttons):
 st.markdown('</div>', unsafe_allow_html=True)
 
 # 音声再生
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 if "play" in query_params:
     sound_file = query_params["play"][0]
     st.audio(f"static/sounds/{sound_file}", format="audio/mp3")
