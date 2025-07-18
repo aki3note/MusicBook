@@ -65,9 +65,9 @@ buttons = [
 BUTTON_WIDTH = 160
 BUTTON_HEIGHT = 150
 LEFT_START = 30
-TOP_START = 0
-X_SPACING = 0
-Y_SPACING = 10
+TOP_START = -1000
+X_SPACING = 50
+Y_SPACING = 0
 
 # 16個ボタン配置
 for i, btn in enumerate(buttons):
