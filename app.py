@@ -67,7 +67,7 @@ BUTTON_HEIGHT = 130
 LEFT_START = 130
 TOP_START = -800
 X_SPACING = 250
-Y_SPACING = 100
+Y_SPACING = 120
 
 # 16個ボタン配置
 for i, btn in enumerate(buttons):
