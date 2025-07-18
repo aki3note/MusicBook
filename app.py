@@ -1,9 +1,10 @@
 import streamlit as st
+import os
 
 # ページ設定
 st.set_page_config(page_title="うたボタン", layout="wide")
 
-# 音声対応データ（仮のURL名・ダミーMP3）
+# 音声対応データ（16個）
 buttons = [
     {"title": "いぬのおまわりさん", "sound": "inu.mp3"},
     {"title": "どんぐりころころ", "sound": "donguri.mp3"},
@@ -23,41 +24,42 @@ buttons = [
     {"title": "アンパンマン", "sound": "anpanman.mp3"},
 ]
 
-# グリッド計算
+# サイズと位置
 BUTTON_WIDTH = 160
 BUTTON_HEIGHT = 150
 LEFT_START = 30
 TOP_START = 130
-X_SPACING = 175  # 水平方向の間隔
-Y_SPACING = 175  # 垂直方向の間隔
+X_SPACING = 175
+Y_SPACING = 175
 
-# CSS スタイル
-st.markdown("""
+# 背景画像 + ボタンをCSSで構成
+st.markdown(f"""
 <style>
-.container {
+.container {{
     position: relative;
     width: 768px;
     height: 1024px;
-}
-.bg-image {
-    width: 100%;
-    height: auto;
-}
-.button {
+    background-image: url("static/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 2px solid #ccc;
+    margin: 0 auto;
+}}
+
+.button {{
     position: absolute;
-    background-color: rgba(0, 0, 255, 0.2); /* 半透明青、デバッグ用 */
+    background-color: rgba(100, 100, 255, 0.3);  /* 半透明青 */
     border: 2px solid rgba(0, 0, 0, 0.2);
     border-radius: 12px;
+    width: {BUTTON_WIDTH}px;
+    height: {BUTTON_HEIGHT}px;
     cursor: pointer;
-}
+}}
 </style>
+<div class="container">
 """, unsafe_allow_html=True)
 
-# 背景とボタン配置
-st.markdown('<div class="container">', unsafe_allow_html=True)
-st.image("static/background.jpg", use_container_width=False, width=768)
-
-# 16個のボタン配置
+# ボタンを配置
 for i, btn in enumerate(buttons):
     row = i // 4
     col = i % 4
@@ -66,16 +68,18 @@ for i, btn in enumerate(buttons):
     st.markdown(f"""
     <form method="get">
         <button name="play" value="{btn['sound']}" class="button"
-                style="top: {top}px; left: {left}px;
-                       width: {BUTTON_WIDTH}px; height: {BUTTON_HEIGHT}px;">
-        </button>
+                style="top: {top}px; left: {left}px;"></button>
     </form>
     """, unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
-# 音声再生
+# 音声再生（安全チェックあり）
 query_params = st.query_params
 if "play" in query_params:
     sound_file = query_params["play"][0]
-    st.audio(f"static/sounds/{sound_file}", format="audio/mp3")
+    sound_path = f"static/sounds/{sound_file}"
+    if os.path.exists(sound_path):
+        st.audio(sound_path, format="audio/mp3")
+    else:
+        st.warning(f"音声ファイルが見つかりません: {sound_file}")
