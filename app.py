@@ -76,12 +76,12 @@ for i, btn in enumerate(buttons):
     top = TOP_START + row * Y_SPACING
     left = LEFT_START + col * X_SPACING
     st.markdown(f"""
-    <form method="get">
-        <button name="play" value="{btn['sound']}" class="button"
-                style="top: {top}px; left: {left}px;"></button>
-    </form>
+    <button onclick="window.location.search='?play={btn['sound']}'"
+            class="button"
+            style="top: {top}px; left: {left}px;">
+    </button>
     """, unsafe_allow_html=True)
-
+    
 st.markdown("</div>", unsafe_allow_html=True)
 
 # 音声再生
